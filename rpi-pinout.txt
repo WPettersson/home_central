@@ -1,0 +1,16 @@
+relay
+-----
+
+5v 2/4
+3.3v 1
+gnd  6
+out1 3
+out2 5
+
+sensor
+------
+
+3.3v  pin 17           6 purple
+gnd  pin 9             2 grey
+io  bcm4/gpio4 pin 7   1 blue
+
