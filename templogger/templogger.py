@@ -5,6 +5,7 @@
 
 from glob import glob
 from time import sleep
+from os import environ
 
 import psycopg2
 
@@ -22,14 +23,11 @@ DEVICE_FILE = DEVICE_FOLDER + '/w1_slave'
 
 ZONE = 1
 
-DB = 'db_name'
-"""Database name."""
-USER = 'user'
-"""Database user."""
-PASSWORD = 'password'
-"""Database password."""
-DBHOST = 'localhost'
-"""Database host."""
+# Read parameters from environment variables
+DB = environ['HC_DB']
+DBHOST = environ['HC_DBHOST']
+USER = environ['HC_USER']
+PASSWORD = environ['HC_PASSWORD']
 
 
 def read_temp():
