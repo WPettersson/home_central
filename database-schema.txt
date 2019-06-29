@@ -1,0 +1,10 @@
+CREATE TABLE zones
+(
+id SMALLINT PRIMARY KEY, shortname TEXT, longname TEXT
+);
+
+CREATE TABLE temperatures
+(
+temp INTEGER, zone_id SMALLINT, datestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+PRIMARY KEY (zone_id, datestamp)
+);
