@@ -12,37 +12,45 @@ USER = environ['HC_USER']
 PASSWORD = environ['HC_PASSWORD']
 
 
-@app.route("/")
-def main():
-    """Display main screen."""
+def get_zones():
+    """Get the names and ids of zones."""
     conn = psycopg2.connect(dbname=DB, user=USER, password=PASSWORD)
     cursor = conn.cursor()
     cursor.execute("SELECT id, shortname FROM zones")
     data = cursor.fetchall()
     zones = [{'id': row[0], 'name': row[1]} for row in data]
-    cursor.close()
-    conn.close()
-    return render_template('index.html', zones=zones)
+    return zones
 
 
-@app.route("/temps/<zone>/<hours>")
-def get_temperatures(zone=1, hours=24):
+@app.route("/")
+def main():
+    """Display main screen."""
+    return render_template('index.html')
+
+
+@app.route("/temps/<hours>")
+def get_temperatures(hours=24):
     """Get (recent) temperatures from a zone."""
     hours = int(hours)
-    zone = int(zone)
     if hours > 168:
         raise Exception(f"Too large a duration passed: {hours}")
+    sets = []
+    all_zones = get_zones()
     conn = psycopg2.connect(dbname=DB, user=USER, password=PASSWORD)
     cursor = conn.cursor()
-    cursor.execute("SELECT temp, datestamp FROM temperatures "
-                   "WHERE zone_id = %s "
-                   "AND (NOW() - interval '%s hours') < datestamp",
-                   (zone, hours))
-    data = cursor.fetchall()
+    for zone in all_zones:
+        cursor.execute("SELECT temp, datestamp FROM temperatures "
+                       "WHERE zone_id = %s "
+                       "AND (NOW() - interval '%s hours') < datestamp",
+                       (zone['id'], hours))
+        data = cursor.fetchall()
+        tempdata = [{'timestamp': row[1], 'temp': row[0]/1000}
+                    for row in data]
+        sets.append({'label': zone['name'],
+                     'data': tempdata})
     cursor.close()
     conn.close()
-    return jsonify([{'timestamp': row[1], 'temp': row[0]/1000}
-                    for row in data])
+    return jsonify(sets)
 
 
 if __name__ == "__main__":
