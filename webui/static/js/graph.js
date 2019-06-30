@@ -2,10 +2,15 @@ var my_colours = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1
 
 function draw_graph(json) {
 	var data = [];
+	var low = 100;
 	for(var i = 0; i < json.length; ++i) {
 		data.push({x: new Date(json[i].timestamp),
 		           y: json[i].temp});
+		if (json[i].temp < low) {
+			low = json[i].temp;
+		}
 	}
+	var min = Math.floor(2*(low - 0.25))/2;
 	var context = $('#chart').get(0).getContext("2d");
 	var chart = new Chart(context, {
 		type: 'line',
@@ -23,6 +28,11 @@ function draw_graph(json) {
 			scales: {
 				xAxes: [{
 					type: 'time'
+				}],
+				yAxes: [{
+					ticks: {
+						suggestedMin: min
+					}
 				}]
 			}
 		}
