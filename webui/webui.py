@@ -14,7 +14,15 @@ PASSWORD = environ['HC_PASSWORD']
 
 @app.route("/")
 def main():
-    return render_template('index.html')
+    """Display main screen."""
+    conn = psycopg2.connect(dbname=DB, user=USER, password=PASSWORD)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, shortname FROM zones")
+    data = cursor.fetchall()
+    zones = [{'id': row[0], 'name': row[1]} for row in data]
+    cursor.close()
+    conn.close()
+    return render_template('index.html', zones=zones)
 
 
 @app.route("/temps/<zone>/<hours>")
@@ -22,7 +30,7 @@ def get_temperatures(zone=1, hours=24):
     """Get (recent) temperatures from a zone."""
     hours = int(hours)
     zone = int(zone)
-    if hours > 24:
+    if hours > 168:
         raise Exception(f"Too large a duration passed: {hours}")
     conn = psycopg2.connect(dbname=DB, user=USER, password=PASSWORD)
     cursor = conn.cursor()

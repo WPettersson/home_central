@@ -10,7 +10,18 @@
 		<script src="{{ url_for('static', filename='js/graph.js') }}"></script>
 	</head>
 	<body>
-		Hello
+		Zone:
+		<select id="zoneselect">
+			{% for zone in zones %}
+			<option value="{{ zone.id }}">{{ zone.name }}</option>
+			{% endfor %}
+		</select>
+		Timescale:
+		<select id="timescale">
+			<option value="24">Last day</option>
+			<option value="72">Last 3 days</option>
+			<option value="168">Last week</option>
+		</select>
 		<canvas id="chart">
 		</canvas>
 	</body>
