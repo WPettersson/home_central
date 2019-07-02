@@ -21,13 +21,12 @@ DEVICE_FOLDER = glob(BASE_DIR + '28*')[0]
 DEVICE_FILE = DEVICE_FOLDER + '/w1_slave'
 """The actual device"""
 
-ZONE = 1
-
 # Read parameters from environment variables
 DB = environ['HC_DB']
 DBHOST = environ['HC_DBHOST']
 USER = environ['HC_USER']
 PASSWORD = environ['HC_PASSWORD']
+ZONE = environ['HC_TEMP_ZONE']
 
 
 def read_temp():
