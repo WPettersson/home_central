@@ -57,7 +57,6 @@ function init() {
 
 
 $(document).ready(function() {
-	$("#zoneselect").change(init);
 	$("#timescale").change(init);
 	init();
 });
