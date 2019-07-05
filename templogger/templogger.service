@@ -1,0 +1,23 @@
+[Unit]
+Description=Temperature Logger
+After=network.target
+
+[Service]
+ExecStart=/home/pi/pi_home/templogger.py
+ProtectSystem=strict
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+MountFlags=private
+NoNewPrivileges=true
+User=pi
+Group=pi
+Environment="HC_DB=database"
+Environment="HC_DBHOST=host"
+Environment="HC_USER=username"
+Environment="HC_PASSWORD=password"
+Environment="HC_TEMP_ZONE=zone"
+
+
+[Install]
+WantedBy=network-online.target
