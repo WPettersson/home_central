@@ -56,7 +56,11 @@ def main():
         temp = read_temp()
         # Don't store -1, which indicates sensor not ready.
         if temp != -1:
-            store_temp(temp)
+            try:
+                store_temp(temp)
+            except psycopg2.OperationalError:
+                # Probably a database host not reachable problem
+                pass
         sleep(SLEEP_TIME)
 
 
