@@ -17,7 +17,7 @@ function draw_graph(json) {
 		dataset = {
 				borderColor: [my_colours[2*i+1]],
 				backgroundColor: [my_colours[2*i]],
-				pointRadius: 1,
+				pointRadius: 3,
 				cubicInterpolationMode: 'monotone',
 				label: json[i].label,
 				data: data
@@ -44,6 +44,14 @@ function draw_graph(json) {
 						suggestedMin: min
 					}
 				}]
+			},
+			tooltips: {
+				callbacks: {
+					label: function(tooltipItem, data){
+						return "Temp: " + Number(tooltipItem.yLabel).toFixed(2)
+									+ "°C";
+					}
+				}
 			}
 		}
 	});
