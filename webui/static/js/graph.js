@@ -1,4 +1,6 @@
-var my_colours = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"]
+var my_colours = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"];
+
+var myChart = null;
 
 function draw_graph(json) {
 	var datasets = [];
@@ -23,8 +25,11 @@ function draw_graph(json) {
 		datasets.push(dataset);
 	}
 	var min = Math.floor(2*(low - 0.25))/2;
+	if (myChart != undefined) {
+		myChart.destroy();
+	}
 	var context = $('#chart').get(0).getContext("2d");
-	var chart = new Chart(context, {
+	myChart = new Chart(context, {
 		type: 'line',
 		data: {
 			datasets: datasets
