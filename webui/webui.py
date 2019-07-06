@@ -1,6 +1,7 @@
 """Web UI for home central"""
 
 from flask import Flask, jsonify, render_template
+import pandas
 import psycopg2
 from os import environ
 
@@ -46,8 +47,23 @@ def get_temperatures(hours=24):
         data = cursor.fetchall()
         tempdata = [{'timestamp': row[1], 'temp': row[0]/1000}
                     for row in data]
+        df = pandas.DataFrame(tempdata)
+        df['timestamp'] = pandas.to_datetime(df['timestamp'])
+        df = df.set_index('timestamp')
+        myframe = pandas.DataFrame()
+        if hours <= 24:
+            myframe['temp'] = df.temp.resample('15 min').mean()
+        elif hours <= 72:
+            myframe['temp'] = (df.temp.resample('H').mean()
+                               .interpolate(method='linear'))
+        else:
+            myframe['temp'] = (df.temp.resample('H').mean()
+                               .interpolate(method='linear'))
+        data = [{'timestamp': row[0],
+                 'temp': row[1]} for row in zip(myframe.index.tolist(),
+                                                myframe.temp.tolist())]
         sets.append({'label': zone['name'],
-                     'data': tempdata})
+                     'data': data})
     cursor.close()
     conn.close()
     return jsonify(sets)
