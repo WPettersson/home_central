@@ -58,9 +58,10 @@ def main():
         if temp != -1:
             try:
                 store_temp(temp)
-            except psycopg2.OperationalError:
-                # Probably a database host not reachable problem
-                pass
+            except psycopg2.OperationalError as e:
+                # Probably a database host not reachable problem, print it but
+                # keep running
+                print(e)
         sleep(SLEEP_TIME)
 
 
