@@ -1,4 +1,4 @@
-var my_colours = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"];
+var my_colours = ["rgba(166, 206, 227, 0.3)", "#1f78b4", "rgba(178, 223, 138, 0.3)", "#33a02c", "#fb9a99", "#e31a1c", "#fdbf6f", "#ff7f00", "#cab2d6", "#6a3d9a", "#ffff99", "#b15928"];
 
 var myChart = null;
 
