@@ -37,7 +37,12 @@ function draw_graph(json) {
 		options: {
 			scales: {
 				xAxes: [{
-					type: 'time'
+					type: 'time',
+					time: {
+						displayFormats: {
+							'hour': 'ddd ha'
+						}
+					}
 				}],
 				yAxes: [{
 					ticks: {
