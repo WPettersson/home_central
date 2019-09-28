@@ -11,7 +11,7 @@ if "HC_RELAY_PIN" in environ:
     PIN = environ["HC_RELAY_PIN"]
 
 
-class RelayController(Controller):
+class PiRelayController(Controller):
     """Controls a relay
     """
     def __init__(self, ident):
