@@ -43,10 +43,17 @@ class Controller:
         return self._current_mode
 
     @mode.setter
-    def mode(self, new_mode):
-        """Set the mode."""
+    def mode(self, new_values):
+        """Set the mode.
+        :param new_values: a (mode, rule) pair where mode is the new mode, and
+        rule is the triggering rule for the change"""
+        try:
+            new_mode, rule = new_values
+        except ValueError:
+            raise ValueError("Needs a tuple: pass in (mode, rule)")
         if new_mode != self._current_mode:
             self.trigger(new_mode)
+            self.log_action(new_mode, rule)
         self._current_mode = new_mode
 
     def check_rules(self):
@@ -62,8 +69,7 @@ class Controller:
                 cursor = db.cursor()  # Refresh cursor
                 cursor.execute("SELECT output FROM rules WHERE id = %s",
                                (rule,))
-                self.mode = cursor.fetchone()[0]
-                self.log_action(self.mode, rule)
+                self.mode = (cursor.fetchone()[0], rule)
                 return
 
     def log_action(self, action, rule):
