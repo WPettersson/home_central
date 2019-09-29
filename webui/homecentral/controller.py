@@ -73,6 +73,7 @@ class Controller:
         cursor = db.cursor()
         cursor.execute("INSERT INTO log (relay_id, rule_id, action) "
                        "VALUES (%s, %s, %s)", (self._ident, rule, action))
+        db.commit()
 
     def trigger(self, switch_on):
         """If switch_on is True, switch the thing on, else switch it off.

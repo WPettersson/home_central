@@ -34,6 +34,10 @@ class DB:
         """Get a cursor to the DB"""
         return DB._conn.cursor()
 
+    def commit(self):
+        """Commit a transaction."""
+        DB._conn.commit()
+
 
 def get_zones():
     """Get the names and ids of zones."""
