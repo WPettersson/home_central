@@ -46,8 +46,8 @@ def load_plugins():
     sys.path.insert(0, plugin_dir)
     for plugin in plugin_files:
         __import__(plugin)
-        for plugin_class in Plugin.__subclasses__():
-            if hasattr(plugin_class, "plugin_name"):
-                plugin = plugin_class()
-                plugin.register(plugin.plugin_name)
+    for plugin_class in Plugin.__subclasses__():
+        if hasattr(plugin_class, "plugin_name"):
+            plugin = plugin_class()
+            plugin.register(plugin.plugin_name)
     Plugin._loaded = True
