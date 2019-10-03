@@ -11,7 +11,7 @@ TIME_FMT = "%H:%M"
 
 
 class DateTimePlugin(Plugin):
-    def check(comparison, value, value_type, second_value=None):
+    def check(self, comparison, value, value_type, second_value=None):
         """Check the date/time currently against the database.
         comparison is one of "LE", "E", "NE", or "GE", standing for:
         LE - less than or equal to, earlier than
