@@ -43,8 +43,12 @@ class DateTimePlugin(Plugin):
                 return now.weekday() > 4  # so Sat,Sun are 5,6
         if value_type == "DATE":
             dt = datetime.strptime(value, DATE_FMT)
+            dt = dt.date()
+            now = now.date()
         elif value_type == "TIME":
             dt = datetime.strptime(value, TIME_FMT)
+            dt = dt.time()
+            now = now.time()
         else:
             dt = datetime.strptime(value, DATETIME_FMT)
         if comparison == "LE":
@@ -57,8 +61,10 @@ class DateTimePlugin(Plugin):
         # format
         if value_type == "DATE":
             second = datetime.strptime(second_value, DATE_FMT)
+            second = second.date()
         elif value_type == "TIME":
             second = datetime.strptime(second_value, TIME_FMT)
+            second = second.time()
         else:
             second = datetime.strptime(second_value, DATETIME_FMT)
         if comparison == "IN":
