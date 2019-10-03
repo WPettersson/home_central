@@ -11,6 +11,9 @@ TIME_FMT = "%H:%M"
 
 
 class DateTimePlugin(Plugin):
+    """A plugin to compare date/times to current."""
+    plugin_name = 'datetime'
+
     def check(self, comparison, value, value_type, second_value=None):
         """Check the date/time currently against the database.
         comparison is one of "LE", "E", "NE", or "GE", standing for:
