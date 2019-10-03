@@ -1,3 +1,5 @@
+CREATE EXTENSION hstore;
+
 CREATE TABLE zones
 (
 id SMALLINT PRIMARY KEY, shortname TEXT, longname TEXT
@@ -8,3 +10,47 @@ CREATE TABLE temperatures
 temp INTEGER, zone_id SMALLINT, datestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
 PRIMARY KEY (zone_id, datestamp)
 );
+
+CREATE TABLE rules
+(
+    id INTEGER NOT NULL PRIMARY KEY,
+    description TEXT,
+    output BOOLEAN
+)
+
+CREATE TABLE rule_map
+(
+    controller_id INTEGER NOT NULL,
+    rule_id INTEGER NOT NULL,
+    priority INTEGER
+)
+
+CREATE TABLE log
+(
+    relay_id INTEGER,
+    rule_id INTEGER,
+    datestamp TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    action BOOLEAN
+)
+
+CREATE TABLE controllers
+(
+    id INTEGER NOT NULL PRIMARY KEY,
+    description TEXT,
+    poll_time INTEGER
+)
+
+CREATE TABLE conditions
+(
+    id INTEGER NOT NULL PRIMARY KEY,
+    plugin TEXT,
+    options HSTORE
+)
+
+CREATE TABLE condition_map
+(
+    rule_id INTEGER NOT NULL,
+    condition_id INTEGER NOT NULL,
+    priority INTEGER,
+    CONSTRAINT condition_map_pkey PRIMARY KEY (rule_id, condition_id)
+)
