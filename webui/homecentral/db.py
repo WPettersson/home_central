@@ -55,5 +55,5 @@ def get_temp(zone):
     db = DB()
     cursor = db.cursor()
     cursor.execute("SELECT temp FROM temperatures where zone_id = %s "
-                   "ORDER BY datestamp LIMIT 1", zone)
+                   "ORDER BY datestamp DESC LIMIT 1", zone)
     return int(cursor.fetchone()[0])
