@@ -13,4 +13,4 @@ class Probability(Plugin):
     def check(self, value):
         """Randomly (with value probability) return true
         """
-        return random() <= value
+        return random() <= float(value)
