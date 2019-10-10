@@ -20,6 +20,9 @@ class PiRelayController(Controller):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self._pin, GPIO.OUT)
 
+    def __del__(self):
+        GPIO.cleanup()
+
     def trigger(self, switch_on):
         """If switch_on is True, switch the thing on, else switch it off.
         """
