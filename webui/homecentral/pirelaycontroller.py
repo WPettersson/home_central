@@ -1,5 +1,8 @@
 """A relay controller class."""
 
+import logging
+
+LOG = logging.getLogger(__name__)
 
 import RPi.GPIO as GPIO
 
@@ -20,6 +23,7 @@ class PiRelayController(Controller):
     def trigger(self, switch_on):
         """If switch_on is True, switch the thing on, else switch it off.
         """
+        LOG.info("Setting to {switch_on} on {self._pin}")
         if switch_on:
             GPIO.output(self._pin, 0)
         else:

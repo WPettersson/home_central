@@ -1,6 +1,9 @@
 """A base controller class."""
 
+import logging
 from time import sleep
+
+LOG = logging.getLogger(__name__)
 
 from homecentral.db import DB
 from homecentral.plugins import check_plugin
@@ -15,7 +18,7 @@ class Controller:
         self._refresh = None  # Time in seconds between checking conditions
         self._current_mode = None
         self._name = None
-        print(f"Starting {self.get_name()}")
+        LOG.info(f"Starting {self.get_name()}")
 
     def get_name(self):
         """Get the short name."""
@@ -52,6 +55,7 @@ class Controller:
         except ValueError:
             raise ValueError("Needs a tuple: pass in (mode, rule)")
         if new_mode != self._current_mode:
+            LOG.info(f"Mode changed to {new_mode}")
             self.trigger(new_mode)
             self.log_action(new_mode, rule)
         self._current_mode = new_mode
@@ -69,6 +73,7 @@ class Controller:
                 cursor = db.cursor()  # Refresh cursor
                 cursor.execute("SELECT output FROM rules WHERE id = %s",
                                (rule,))
+                LOG.info("Rule {rule} passed")
                 self.mode = (cursor.fetchone()[0], rule)
                 return
 
