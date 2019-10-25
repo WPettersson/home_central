@@ -1,6 +1,7 @@
 """Database access"""
 
 from os import environ
+from time import sleep
 import psycopg2
 import psycopg2.extras
 
@@ -12,16 +13,28 @@ class DB:
 
     def __init__(self):
         """If not connected, connect, else increase usage counter."""
-        if DB._conn is None:
+        time_delay = 1
+        while DB._conn is None:
             # Read parameters from environment variables
-            DB._conn = psycopg2.connect(dbname=environ['HC_DB'],
-                                        user=environ['HC_USER'],
-                                        password=environ['HC_PASSWORD'],
-                                        host=environ['HC_DBHOST'])
-            psycopg2.extras.register_hstore(DB._conn)
-            DB._usage = 1
-        else:
-            DB._usage += 1
+            try:
+                DB._conn = psycopg2.connect(dbname=environ['HC_DB'],
+                                            user=environ['HC_USER'],
+                                            password=environ['HC_PASSWORD'],
+                                            host=environ['HC_DBHOST'])
+                psycopg2.extras.register_hstore(DB._conn)
+                DB._usage = 1
+            except psycopg2.OperationalError as exc:
+                if "Temporary failure in name resolution" in exc.message:
+                    sleep(time_delay)
+                    if time_delay == 1:
+                        time_delay = 5
+                    elif time_delay == 5:
+                        time_delay = 15
+                    elif time_delay == 15:
+                        time_delay = 45
+                else:
+                    raise exc
+        DB._usage += 1
 
     def __del__(self):
         """Remove a user. If we're the last, close the connection."""
