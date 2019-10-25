@@ -1,7 +1,7 @@
 """Check whether IP address can be pinged"""
 
 
-from subprocess import call
+from subprocess import run
 
 from homecentral.plugins import Plugin
 
@@ -13,4 +13,5 @@ class Ping(Plugin):
     def check(self, host):
         """Check if the host can be pinged
         """
-        return call(["ping", "-c", "1", host]) == 0
+        return_obj = run(["ping", "-c", "1", host]) == 0
+        return return_obj.returncode == 0
