@@ -15,8 +15,6 @@ class PiRelayController(Controller):
     def __init__(self, ident, pin):
         super().__init__(ident)
         self._pin = pin
-        # Don't keep warning about mode if it's already set
-        GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self._pin, GPIO.OUT)
 
