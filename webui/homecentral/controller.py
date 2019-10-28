@@ -73,7 +73,7 @@ class Controller:
                 cursor = db.cursor()  # Refresh cursor
                 cursor.execute("SELECT output FROM rules WHERE id = %s",
                                (rule,))
-                LOG.info("Rule {rule} passed")
+                LOG.info(f"Rule {rule} passed")
                 self.mode = (cursor.fetchone()[0], rule)
                 return
 
