@@ -24,7 +24,7 @@ class DB:
                 psycopg2.extras.register_hstore(DB._conn)
                 DB._usage = 1
             except psycopg2.OperationalError as exc:
-                if "Temporary failure in name resolution" in exc.message:
+                if hasattr(exc, 'message') and "Temporary failure in name resolution" in exc.message:
                     sleep(time_delay)
                     if time_delay == 1:
                         time_delay = 5
